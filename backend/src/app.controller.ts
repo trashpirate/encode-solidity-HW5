@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { AppService } from './app.service';
-import { MintTokensDto } from './dtos/mintTokens.dto';
+import { PurchaseTokensDto } from './dtos/purchaseTokens.dto';
 
 @Controller()
 export class AppController {
@@ -21,9 +21,9 @@ export class AppController {
     return this.appService.openBets(closingTime);
   }
 
-  @Get('purchaseTokens')
-  purchaseTokens(): Promise<any> {
-    return this.appService.purchaseTokens();
+  @Post('purchaseTokens')
+  purchaseTokens(@Body() token: PurchaseTokensDto): Promise<any> {
+    return this.appService.purchaseTokens(token.amount);
   }
 
   @Get('bet')

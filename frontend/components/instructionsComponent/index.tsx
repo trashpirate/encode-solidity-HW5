@@ -161,26 +161,50 @@ function GetRandom() {
 function PurchaseTokens() {
   const [data, setData] = useState<any>(null);
   const [isLoading, setLoading] = useState(false);
+  const [tokenAmount, setTokenAmount] = useState<any>(0.001);
+
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ amount: tokenAmount }),
+  };
 
   if (isLoading) return <p>Purchasing tokens... </p>;
   if (!data)
     return (
-      <Button
-        size="large"
-        variant="contained"
-        disabled={isLoading}
-        onClick={() => {
-          setLoading(true);
-          fetch("http://localhost:3001/purchaseTokens")
-            .then((res) => res.json())
-            .then((data) => {
-              setData(data);
-              setLoading(false);
-            });
-        }}
-      >
-        Purchase Tokens
-      </Button>
+      <Box component="form" noValidate autoComplete="off">
+        <Grid container direction="row" gap={2} alignItems="flex-end">
+          <Grid item>
+            <FormControl>
+              <InputLabel htmlFor="proposal-input"> Token Amount </InputLabel>
+              <OutlinedInput
+                id="proposal-input"
+                value={tokenAmount}
+                onChange={(e) => setTokenAmount(e.target.value)}
+                label="Witdraw Amount"
+              />
+            </FormControl>
+          </Grid>
+          <Grid item>
+            <Button
+              size="large"
+              variant="contained"
+              disabled={isLoading}
+              onClick={() => {
+                setLoading(true);
+                fetch("http://localhost:3001/purchaseTokens", requestOptions)
+                  .then((res) => res.json())
+                  .then((data) => {
+                    setData(data);
+                    setLoading(false);
+                  });
+              }}
+            >
+              Purchase Tokens
+            </Button>
+          </Grid>
+        </Grid>
+      </Box>
     );
 
   return (

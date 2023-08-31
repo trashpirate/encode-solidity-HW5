@@ -30,8 +30,9 @@ export class AppService {
     return this.contract.openBets(closingTime);
   }
 
-  purchaseTokens(): Promise<any> {
-    return this.contract.purchaseTokens();
+  purchaseTokens(amount: number): Promise<any> {
+    const options = {value: ethers.parseEther(amount.toString())}
+    return this.contract.purchaseTokens(options);
   }
 
   bet(): Promise<any> {
